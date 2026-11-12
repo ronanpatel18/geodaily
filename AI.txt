@@ -1,0 +1,11 @@
+AI Usage:
+Claude - Opus 5.5, Sonnet 5.5
+75%
+
+
+We utilized AI to do the following: 
+
+- Feedback during the planning phase
+- Creating the initial build / file structure of the project
+- Code generation 
+- Code review (finding potential bugs) 
