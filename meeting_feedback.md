@@ -1,0 +1,12 @@
+- (immediate/actionable) remove practice button on the top menu on home page (since we have practice button on landing alredy)
+- (immediate/actionable) dark mode 
+- leave button is the only option in a menu?
+- potentially color scheme / use but don’t add too much (if at all)
+  - although when we go inside and play the game legit, don’t distract with color 
+- same layout everywhere —> back to home button is on the top left only on some pages, it should be persistent across al pages or none
+  - uniform layout across all pages
+- more interactive practice mode
+  - use some different colors
+  - lot of blank space under practice mode
+  - something interactive, or just an image to fill up the space
+overall maybe just change landing page
