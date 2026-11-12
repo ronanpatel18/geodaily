@@ -48,8 +48,18 @@ The work is split into three parts:
 | Stats and sharing | Results map, emoji share summary, browser-saved streaks and stats |
 
 
+## Running locally (v0.1)
+
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production build into dist/
+```
+
+v0.1 is a Vite + React app with in-memory mock data: locations come from `src/data/locations.js`,
+and Street View and the maps are placeholders (the SVG `WorldMap` stands in for Google Maps).
+Stats and settings persist in `localStorage` (seeded with mock history on first launch).
+
 ### Landing page
 
-The current coming-soon page is a single static `index.html` with no build step. Open it in a browser to preview it.
-
-
+The original coming-soon page now lives at `public/landing.html` (served at `/landing.html`).
