@@ -3,11 +3,13 @@ import IconButton from '../common/IconButton';
 import { hasStreetView, loadGoogleMaps } from '../../lib/streetview';
 
 /** Real Google Street View panorama. Labels, address and walking links are disabled to avoid giving the answer away. */
-function PanoramaView({ panoId, onError }) {
+function PanoramaView({ panoId, onError, onReady }) {
   const containerRef = useRef(null);
   const panoRef = useRef(null);
   const onErrorRef = useRef(onError);
   onErrorRef.current = onError;
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
   const initial = useRef(panoId);
 
   useEffect(() => {
@@ -30,6 +32,12 @@ function PanoramaView({ panoId, onError }) {
           motionTrackingControl: false,
           scrollwheel: true,
           visible: true,
+        });
+        // Fires for the first panorama and again after every setPano (next round).
+        panoRef.current.addListener('status_changed', () => {
+          const status = panoRef.current?.getStatus();
+          if (status === 'OK') onReadyRef.current?.();
+          else if (status) onErrorRef.current?.(`Panorama unavailable (${status})`);
         });
       })
       .catch((e) => onErrorRef.current?.(e.message));
@@ -64,7 +72,9 @@ function PanoramaView({ panoId, onError }) {
 }
 
 /** Fallback when there's no API key, no coverage, or the API failed. */
-function PlaceholderView({ location, roundNumber, reason }) {
+function PlaceholderView({ location, roundNumber, reason, onReady }) {
+  // Nothing to load: the round can start straight away.
+  useEffect(() => { onReady?.(); }, [location.id, onReady]);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [drag, setDrag] = useState(null);
@@ -102,8 +112,10 @@ function PlaceholderView({ location, roundNumber, reason }) {
   );
 }
 
-export default function StreetViewPanel({ location, roundNumber }) {
+export default function StreetViewPanel({ location, roundNumber, onReady }) {
   const [error, setError] = useState(null);
+  // A failed panorama only affects its own round.
+  useEffect(() => { setError(null); }, [location.id]);
   const usable = hasStreetView && location.panoId && !error;
 
   let reason = 'no Street View coverage found for this location';
@@ -113,9 +125,9 @@ export default function StreetViewPanel({ location, roundNumber }) {
   return (
     <section className="placeholder streetview">
       {usable ? (
-        <PanoramaView panoId={location.panoId} onError={setError} />
+        <PanoramaView panoId={location.panoId} onError={setError} onReady={onReady} />
       ) : (
-        <PlaceholderView location={location} roundNumber={roundNumber} reason={reason} />
+        <PlaceholderView location={location} roundNumber={roundNumber} reason={reason} onReady={onReady} />
       )}
     </section>
   );

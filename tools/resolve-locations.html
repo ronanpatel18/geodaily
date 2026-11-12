@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Location Resolver</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; max-width: 900px; color: #1f2633; background: #fff; }
+      button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid #1f2633; background: #1f2633; color: #fff; cursor: pointer; }
+      button:disabled { opacity: 0.5; cursor: default; }
+      pre { background: #f4f5f7; padding: 12px; border-radius: 8px; white-space: pre-wrap; max-height: 420px; overflow: auto; }
+      label { display: block; margin: 8px 0; }
+    </style>
+  </head>
+  <body>
+    <h1>GeoDaily location resolver (dev only)</h1>
+    <p>
+      Pins every candidate in <code>src/data/candidates.js</code> to the nearest official Google outdoor
+      panorama and writes <code>src/data/locations.json</code>. Candidates with no coverage are dropped.
+      Needs <code>VITE_GOOGLE_MAPS_API_KEY</code> in <code>.env.local</code>; only works under <code>npm run dev</code>.
+    </p>
+    <label><input type="checkbox" id="keep" checked /> Keep panoramas already in locations.json (only resolve new candidates)</label>
+    <button type="button" id="run">Resolve and save</button>
+    <p id="status"></p>
+    <pre id="log"></pre>
+    <script type="module" src="./resolve-locations.js"></script>
+  </body>
+</html>

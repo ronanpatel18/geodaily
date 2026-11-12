@@ -1,24 +1,25 @@
-import { buildMockGames } from '../data/mockStats';
-import { addDays, dailyNumber, dateKey } from './format';
+import { addDays, dateKey } from './format';
 
 const KEY = 'geodaily.stats.v1';
 
-function seed() {
-  const today = dateKey();
-  const games = buildMockGames(today).map((g) =>
-    g.mode === 'daily' ? { ...g, dailyNo: dailyNumber(g.date) } : g,
-  );
-  return { since: addDays(today, -73), games };
+/**
+ * v0.1 seeded new players with fake history (ids starting "mock-"). Strip it so
+ * early players don't keep a streak they never earned.
+ */
+export function migrateStats(stored, today = dateKey()) {
+  const games = Array.isArray(stored?.games) ? stored.games.filter((g) => !String(g.id).startsWith('mock-')) : [];
+  const since = games.length ? games.reduce((min, g) => (g.date < min ? g.date : min), games[0].date) : today;
+  return { since, games };
 }
 
 export function loadStats() {
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) return migrateStats(JSON.parse(raw));
   } catch {
-    /* fall through to seed */
+    /* corrupt or unavailable storage: start fresh */
   }
-  return seed();
+  return resetStats();
 }
 
 export function saveStats(stats) {

@@ -4,7 +4,7 @@ import IconButton from '../common/IconButton';
 import { formatClockPadded, formatNumber } from '../../lib/format';
 import { ROUNDS_PER_GAME } from '../../lib/scoring';
 
-export default function GameHeader({ roundIndex, secondsLeft, potential, totalSoFar, onQuit }) {
+export default function GameHeader({ roundIndex, secondsLeft, waiting, potential, totalSoFar, quitLabel = 'Quit to home', onQuit }) {
   const [menu, setMenu] = useState(false);
   return (
     <header className="app-header game-header">
@@ -22,7 +22,7 @@ export default function GameHeader({ roundIndex, secondsLeft, potential, totalSo
         <span className="pill">Relaxed · No timer</span>
       ) : (
         <div className={`timer ${secondsLeft <= 15 ? 'is-low' : ''}`}>
-          ⏱ <strong>{formatClockPadded(secondsLeft)}</strong> <span className="muted small">left</span>
+          ⏱ <strong>{formatClockPadded(secondsLeft)}</strong> <span className="muted small">{waiting ? 'loading…' : 'left'}</span>
         </div>
       )}
       <div className="score-box">
@@ -37,7 +37,7 @@ export default function GameHeader({ roundIndex, secondsLeft, potential, totalSo
         <IconButton label="Menu" onClick={() => setMenu((m) => !m)}>☰</IconButton>
         {menu && (
           <div className="dropdown__panel card">
-            <button type="button" className="menu-item" onClick={onQuit}>Quit to home</button>
+            <button type="button" className="menu-item" onClick={onQuit}>{quitLabel}</button>
           </div>
         )}
       </div>

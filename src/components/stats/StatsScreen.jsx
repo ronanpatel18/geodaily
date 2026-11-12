@@ -41,8 +41,8 @@ export default function StatsScreen({ onNavigate }) {
           </div>
           <div className="card stat-tile">
             <span className="muted small">Avg Distance Error</span>
-            <strong className="stat-tile__value">{formatDistance(s.avgDistanceKm, units)}</strong>
-            <span className="muted small">Lifetime · ≈ {formatDistance(s.avgDistanceKm, otherUnits)}</span>
+            <strong className="stat-tile__value">{s.gamesPlayed ? formatDistance(s.avgDistanceKm, units) : '—'}</strong>
+            <span className="muted small">{s.gamesPlayed ? `Lifetime · ≈ ${formatDistance(s.avgDistanceKm, otherUnits)}` : 'No games yet'}</span>
           </div>
           <div className="card stat-tile">
             <span className="muted small">All-Time High Score</span>

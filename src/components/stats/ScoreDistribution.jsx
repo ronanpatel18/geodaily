@@ -8,6 +8,7 @@ export default function ScoreDistribution({ buckets, highlightIndex, gameCount, 
         <h3>▥ Score distribution</h3>
         <span className="pill">Last {gameCount} games</span>
       </div>
+      {gameCount === 0 && <p className="muted small">Finish a game to start your distribution.</p>}
       <div className="bars" role="img" aria-label="Score distribution bar chart">
         {buckets.map((count, i) => (
           <div className="bars__col" key={LABELS[i]}>

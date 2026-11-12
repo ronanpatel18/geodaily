@@ -32,7 +32,7 @@ export default function SummaryScreen({ result, onNavigate, onPractice }) {
           <div>
             <h1>{isDaily ? `Daily Completed! – ${mediumDate(key)}` : 'Practice Round Complete!'}</h1>
             <p className="muted">
-              {isDaily ? `Daily #${dailyNo}` : 'Practice'} · {settings.relaxed ? 'Relaxed' : 'Timed'} mode · {rounds.length} of 5 locations
+              {isDaily ? `Daily #${dailyNo}` : 'Practice'} · {(result.relaxed ?? settings.relaxed) ? 'Relaxed' : 'Timed'} mode · {rounds.length} of 5 locations
             </p>
           </div>
           {isDaily && <span className="pill">Streak extended → {streak} days</span>}

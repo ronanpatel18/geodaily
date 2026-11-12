@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { LngLatBounds, Map as MapLibreMap, Marker, NavigationControl } from 'maplibre-gl';
+import { LngLatBounds, Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+// MapLibre v6 looks for its worker next to its own module URL, which doesn't exist once
+// Vite bundles it. Point it at the emitted worker file instead.
+setWorkerUrl(workerUrl);
 
 // Free vector style (no API key). Swap for MapTiler/Protomaps later if needed.
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';

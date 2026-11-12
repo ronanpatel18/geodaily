@@ -4,7 +4,7 @@ import { mediumDate, timeUntilMidnight } from '../../lib/format';
 import { MAX_GAME_POINTS } from '../../lib/scoring';
 import { formatNumber } from '../../lib/format';
 
-export default function DailyCard({ todayKey, dailyNo, completed, relaxed, onStart, onViewSummary }) {
+export default function DailyCard({ todayKey, dailyNo, completed, resumeRound, relaxed, onStart, onViewSummary }) {
   const countdown = useMemo(() => timeUntilMidnight(), []);
   return (
     <section className="card daily-card">
@@ -26,7 +26,9 @@ export default function DailyCard({ todayKey, dailyNo, completed, relaxed, onSta
         {completed ? (
           <button type="button" className="btn btn--primary" onClick={onViewSummary}>View Today's Results</button>
         ) : (
-          <button type="button" className="btn btn--primary" onClick={onStart}>Start Daily Challenge</button>
+          <button type="button" className="btn btn--primary" onClick={onStart}>
+            {resumeRound ? `Resume Daily Challenge (${resumeRound}/5)` : 'Start Daily Challenge'}
+          </button>
         )}
         <span className="muted small">Next challenge in {countdown}</span>
       </div>

@@ -2,9 +2,9 @@ import { formatDistance } from '../../lib/format';
 
 export default function QuickStats({ summary, units, onViewStats }) {
   const items = [
-    { icon: '🔥', value: `${summary.current} days`, label: 'Current Streak' },
+    { icon: '🔥', value: `${summary.current} ${summary.current === 1 ? 'day' : 'days'}`, label: 'Current Streak' },
     { icon: '▣', value: summary.gamesPlayed, label: 'Games Played' },
-    { icon: '⌖', value: formatDistance(summary.avgDistanceKm, units), label: 'Avg Distance' },
+    { icon: '⌖', value: summary.gamesPlayed ? formatDistance(summary.avgDistanceKm, units) : '—', label: 'Avg Distance' },
   ];
   return (
     <section className="card quick-stats">
