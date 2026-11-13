@@ -92,3 +92,28 @@ them to the nearest panorama at game start.
 ### Landing page
 
 The original coming-soon page now lives at `public/landing.html` (served at `/landing.html`).
+
+## Current application
+
+The editable React source preserves GeoDaily's daily challenge, practice mode,
+scoring, clues, five-round progression, and browser-storage keys. The interface uses the approved dark blue glass styling, a seamless header,
+concise labels, and coordinated animations with reduced-motion support.
+Gameplay includes a visible Back to Home control.
+
+- `index.html`: ready-to-open project preview.
+- `dev.html`: editable Vite source entry.
+- `dist/index.html`: compiled application entry for static HTTP hosting.
+- `src/styles.css`: shared design and motion tokens.
+
+Use Node 24. Run `npm ci` and `npm run dev` to work on the app. Run `npm run build`
+to regenerate the compiled output and main preview. The original linked project
+and live deployment have not been changed. The separate coming-soon source is
+preserved.
+
+Street View requires `VITE_GOOGLE_MAPS_API_KEY` before building. No credentials
+were copied. Without configuration, the unavailable-view fallback remains.
+Fonts and map tiles require internet access. No stock photos or generated images
+were added. The radar is decorative, not a preview of challenge locations.
+The compiled application has not been visually checked in a browser.
+
+Deployment and Street View setup: see [DEPLOY.md](DEPLOY.md).

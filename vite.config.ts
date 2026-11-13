@@ -38,4 +38,22 @@ function locationWriter() {
   };
 }
 
-export default defineConfig({ plugins: [react(), locationWriter()] });
+/** Keep the public root usable in development while production uses compiled HTML. */
+function developmentEntry() {
+  return {
+    name: 'geodaily-development-entry',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        if (req.url === '/' || req.url === '/index.html') req.url = '/dev.html';
+        next();
+      });
+    },
+  };
+}
+
+export default defineConfig({
+  base: './',
+  build: { rollupOptions: { input: 'dev.html' } },
+  plugins: [react(), developmentEntry(), locationWriter()],
+});

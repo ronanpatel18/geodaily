@@ -84,13 +84,28 @@ export default function WorldMap({
     }
     map.on('style.load', () => {
       map.setProjection({ type: 'globe' });
+      const tokens = getComputedStyle(document.documentElement);
+      const mapColor = (name) => tokens.getPropertyValue(name).trim();
+      // Theme the existing vector map without changing geographic data.
+      for (const layer of map.getStyle().layers || []) {
+        const id = layer.id.toLowerCase();
+        if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', mapColor('--map-bg'));
+        if (layer.type === 'fill' && !id.includes('building')) {
+          map.setPaintProperty(layer.id, 'fill-color', id.includes('water') ? mapColor('--map-water') : id.includes('park') || id.includes('landcover') ? mapColor('--map-park') : mapColor('--map-land'));
+        }
+        if (layer.type === 'line') map.setPaintProperty(layer.id, 'line-color', id.includes('boundary') ? mapColor('--map-boundary') : mapColor('--map-road'));
+        if (layer.type === 'symbol' && layer.layout?.['text-field']) {
+          map.setPaintProperty(layer.id, 'text-color', mapColor('--map-text'));
+          map.setPaintProperty(layer.id, 'text-halo-color', mapColor('--map-halo'));
+        }
+      }
       map.addSource(LINES_SRC, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addLayer({
         id: LINES_SRC,
         type: 'line',
         source: LINES_SRC,
         paint: {
-          'line-color': '#1f2633',
+          'line-color': mapColor('--accent'),
           'line-width': 2,
           'line-dasharray': [2, 2],
           'line-opacity': ['case', ['==', ['get', 'active'], false], 0.2, 1],
@@ -147,7 +162,7 @@ export default function WorldMap({
     const b = new LngLatBounds();
     markers.forEach((m) => b.extend([m.lng, m.lat]));
     map.resize();
-    map.fitBounds(b, { padding: 70, maxZoom: 5, duration: 600 });
+    map.fitBounds(b, { padding: 70, maxZoom: 5, duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fitKey, ready]);
 

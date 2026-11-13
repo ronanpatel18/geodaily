@@ -24,7 +24,7 @@ export default function GameScreen({ mode, relaxed, locations, initial, onProgre
         quitLabel={mode === 'daily' ? (relaxed ? 'Leave (progress saved)' : 'Leave (progress saved, timer keeps running)') : 'Quit to home'}
         onQuit={onQuit}
       />
-      <main className="game-grid" data-mode={mode}>
+      <main className={`game-grid game-grid--${game.roundIndex % 2 ? 'odd' : 'even'}`} data-mode={mode}>
         <div className="game-grid__left">
           <StreetViewPanel location={game.location} roundNumber={game.roundIndex + 1} onReady={game.markReady} />
           <CluePanel location={game.location} used={game.cluesUsed} onReveal={game.revealClue} />

@@ -1,3 +1,4 @@
+import Icon from '../common/Icon';
 import { useEffect, useRef, useState } from 'react';
 import IconButton from '../common/IconButton';
 import { hasStreetView, loadGoogleMaps } from '../../lib/streetview';
@@ -66,7 +67,7 @@ function PanoramaView({ panoId, onError, onReady }) {
         <IconButton label="Zoom out" onClick={() => zoomBy(-0.5)}>−</IconButton>
         <IconButton label="Reset view" onClick={() => { panoRef.current?.setPov({ heading: 0, pitch: 0 }); panoRef.current?.setZoom(1); }}>◎</IconButton>
       </div>
-      <div className="hint-chip">🔍 Scroll to zoom · Drag to look around</div>
+      <div className="hint-chip">Scroll to zoom · Drag to look around</div>
     </>
   );
 }
@@ -98,8 +99,8 @@ function PlaceholderView({ location, roundNumber, reason, onReady }) {
         <div className="streetview__road" />
       </div>
       <div className="placeholder__label streetview__label">
-        <div className="streetview__icon">🖼</div>
-        Street View / Location Photo (360° pan)
+        <div className="streetview__icon"><Icon name="globe" /></div>
+        Street View is unavailable
         <div className="muted small">Round {roundNumber} · {reason}</div>
       </div>
       <div className="streetview__controls">
@@ -107,7 +108,7 @@ function PlaceholderView({ location, roundNumber, reason, onReady }) {
         <IconButton label="Zoom out" onClick={() => setZoom((z) => clampZoom(z - 0.25))}>−</IconButton>
         <IconButton label="Reset view" onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }}>◎</IconButton>
       </div>
-      <div className="hint-chip">🔍 Scroll to zoom · Drag to pan</div>
+      <div className="hint-chip">Scroll to zoom · Drag to pan</div>
     </div>
   );
 }
@@ -119,7 +120,7 @@ export default function StreetViewPanel({ location, roundNumber, onReady }) {
   const usable = hasStreetView && location.panoId && !error;
 
   let reason = 'no Street View coverage found for this location';
-  if (!hasStreetView) reason = 'set VITE_GOOGLE_MAPS_API_KEY in .env.local to load Street View';
+  if (!hasStreetView) reason = 'Street View has not been configured for this copy';
   else if (error) reason = error;
 
   return (

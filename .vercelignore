@@ -1,0 +1,6 @@
+node_modules
+.git
+.od-frames
+.od-skills
+.env*
+!.env.example

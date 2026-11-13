@@ -1,24 +1,10 @@
+import Icon from '../common/Icon';
 import { formatDistance } from '../../lib/format';
-
 export default function QuickStats({ summary, units, onViewStats }) {
   const items = [
-    { icon: '🔥', value: `${summary.current} ${summary.current === 1 ? 'day' : 'days'}`, label: 'Current Streak' },
-    { icon: '▣', value: summary.gamesPlayed, label: 'Games Played' },
-    { icon: '⌖', value: summary.gamesPlayed ? formatDistance(summary.avgDistanceKm, units) : '—', label: 'Avg Distance' },
+    { icon: 'flame', value: `${summary.current}`, unit: summary.current === 1 ? 'day' : 'days', label: 'Current streak' },
+    { icon: 'layers', value: summary.gamesPlayed, label: 'Games played' },
+    { icon: 'pin', value: summary.gamesPlayed ? formatDistance(summary.avgDistanceKm, units) : '—', label: 'Average distance' },
   ];
-  return (
-    <section className="card quick-stats">
-      <strong className="quick-stats__title">Quick stats</strong>
-      {items.map((it) => (
-        <div className="quick-stat" key={it.label}>
-          <span className="quick-stat__icon">{it.icon}</span>
-          <div>
-            <div className="quick-stat__value">{it.value}</div>
-            <div className="muted small">{it.label}</div>
-          </div>
-        </div>
-      ))}
-      <button type="button" className="link-btn" onClick={onViewStats}>View full stats →</button>
-    </section>
-  );
+  return <section className="card quick-stats"><div className="quick-stats__title od-field"><strong>Your stats</strong></div>{items.map(it => <div className="quick-stat" key={it.label}><span className="quick-stat__icon"><Icon name={it.icon}/></span><div className="od-stat"><span className="quick-stat__value">{it.value}<small>{it.unit}</small></span><span className="muted small">{it.label}</span></div></div>)}<button type="button" className="link-btn" onClick={onViewStats}><span>View stats</span><Icon name="arrow" /></button></section>;
 }

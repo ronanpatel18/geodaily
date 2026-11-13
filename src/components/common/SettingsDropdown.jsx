@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import IconButton from './IconButton';
 import Toggle from './Toggle';
+import Icon from './Icon';
 
 export default function SettingsDropdown() {
   const { settings, updateSetting } = useApp();
@@ -11,13 +12,15 @@ export default function SettingsDropdown() {
   useEffect(() => {
     if (!open) return undefined;
     const close = (e) => { if (!ref.current?.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); ref.current?.querySelector('button')?.focus(); } };
+    document.addEventListener('keydown', onKey);
     document.addEventListener('mousedown', close);
-    return () => document.removeEventListener('mousedown', close);
+    return () => { document.removeEventListener('mousedown', close); document.removeEventListener('keydown', onKey); };
   }, [open]);
 
   return (
     <div className="dropdown" ref={ref}>
-      <IconButton label="Settings" onClick={() => setOpen((o) => !o)}>⚙</IconButton>
+      <IconButton label="Settings" onClick={() => setOpen((o) => !o)}><Icon name="settings" /></IconButton>
       {open && (
         <div className="dropdown__panel card">
           <h4>Settings</h4>
